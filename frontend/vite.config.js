@@ -12,5 +12,14 @@ export default defineConfig({
         secure: false,
       }
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+  // Configure for SPA routing - fallback to index.html for all routes
+  base: './',
 })
