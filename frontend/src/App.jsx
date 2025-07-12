@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
-import GlassDashboard from './pages/GlassDashboard'
 
-// Simple test component
-const TestPage = () => (
-  <div className="min-h-screen bg-slate-900 text-white p-8">
-    <h1 className="text-4xl font-bold">App is Working!</h1>
-    <p className="text-xl mt-4">React is rendering correctly</p>
-    <a href="/dashboard" className="text-blue-400 underline block mt-4">Go to Dashboard</a>
+// Lazy load the dashboard for better performance
+const GlassDashboard = React.lazy(() => import('./pages/GlassDashboard'))
+// Import the fast-loading landing page
+import LandingPage from './pages/LandingPage'
+
+// Loading component
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+      <p className="text-white text-lg">Loading Dashboard...</p>
+    </div>
   </div>
 )
 
@@ -17,8 +22,12 @@ function App() {
     <ThemeProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<TestPage />} />
-          <Route path="/dashboard" element={<GlassDashboard />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <GlassDashboard />
+            </Suspense>
+          } />
         </Routes>
       </Router>
     </ThemeProvider>

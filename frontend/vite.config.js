@@ -16,9 +16,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          // Split vendor chunks for better caching
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          icons: ['@heroicons/react'],
+        },
       },
     },
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
   },
   // Configure for SPA routing - fallback to index.html for all routes
   base: './',

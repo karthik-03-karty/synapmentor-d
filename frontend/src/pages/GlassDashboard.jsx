@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import {
@@ -3522,4 +3522,4 @@ const GlassDashboard = () => {
   )
 }
 
-export default GlassDashboard
+export default React.memo(GlassDashboard)
